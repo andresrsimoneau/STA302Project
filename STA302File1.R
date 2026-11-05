@@ -13,14 +13,14 @@ library(dplyr)
 
 # we filtered this file to only take households w/ term insurance
 # dta file is used since U.S. gov didn't have csv file
-life_data <- read_dta("~/STA302Project/p22i6.dta")
+life_data <- read_dta("p22i6.dta")
 trimmed_data <- life_data %>%
   select(y1, yy1, x4002,x4003) %>% filter(x4002 == 1,x4003 > 0)
 
 saveRDS(trimmed_data,"~/STA302Project/trimmed_data.rds")
 View(trimmed_data) #this is the dataset w/ info on everyone w/ term insurance
 
-scf_summary <- read.csv("~/STA302Project/SCFP2022.csv") #dataset for all else
+scf_summary <- read.csv("SCFP2022.csv") #dataset for all else
 View(scf_summary)
 
 names(scf_summary) <- tolower(names(scf_summary)) #make columns lowercase
