@@ -4,7 +4,7 @@ library(dplyr)
 implicate_1 <- readRDS("modeling_data.rds")
 View(implicate_1)
 
-# multiple linear regression model
+# multiple linear regression model for graphing
 model <- lm(
   x4003 ~ income + debt + age + kids +
     married + housecl + edcl + asset + lf,
