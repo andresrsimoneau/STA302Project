@@ -9,8 +9,8 @@ library(dplyr)
 # MLR modeling 
 
 
-#The x codes refer to specific columns from the p22i6 file, 
-#do NOT edit them, it will otherwise mess up the file, data, and model entirely 
+# The x codes refer to specific columns from the p22i6 file, 
+# do NOT edit them, it will otherwise mess up the file, data, and model entirely 
 
 # reference for p22i6 file, 
 # x4002 column is boolean if we have term insurance (1=yes, 5=no)
