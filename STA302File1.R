@@ -18,10 +18,8 @@ trimmed_data <- life_data %>%
   select(y1, yy1, x4002,x4003) %>% filter(x4002 == 1,x4003 > 0)
 
 saveRDS(trimmed_data,"~/STA302Project/trimmed_data.rds")
-View(trimmed_data) #this is the dataset w/ info on everyone w/ term insurance
 
 scf_summary <- read.csv("SCFP2022.csv") #dataset for all else
-View(scf_summary)
 
 names(scf_summary) <- tolower(names(scf_summary)) #make columns lowercase
 
@@ -34,11 +32,5 @@ ultimate_data$implicate <- ultimate_data$y1 %% 10
 #filter to get indicate_1 so we do not overcount 
 implicate_1 <- filter(ultimate_data, implicate == 1)
 
-#use ultimate_data for MLR modeling
-View(implicate_1)
 
-
-model <- lm(x4003 ~ income + debt + age + kids + married + housecl + edcl + asset +
-   lf, data = implicate_1)
-
-summary(model)
+saveRDS(implicate_1, "modeling_data.rds")
