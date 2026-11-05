@@ -3,9 +3,8 @@ library(dplyr)
 # Load prepared dataset
 implicate_1 <- readRDS("modeling_data.rds")
 View(implicate_1)
+
 # multiple linear regression model
-
-
 model <- lm(
   x4003 ~ income + debt + age + kids +
     married + housecl + edcl + asset + lf,
