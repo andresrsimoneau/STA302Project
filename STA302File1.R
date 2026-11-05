@@ -5,7 +5,8 @@ library(dplyr)
 # and place it in the file folder
 
 #use SCFP2022.csv as it is w/o change inside the file folder
-
+# this R file is for cleaning purposes, statstical modeling R does the 
+# MLR modeling 
 
 
 #The x codes refer to specific columns from the p22i6 file, 
