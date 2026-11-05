@@ -1,7 +1,12 @@
 library(haven)
 library(dplyr)
 #pls be patient w/ file size, it is very large (226mb) 
-#took a while to understand & clean - andres
+# the p22i6.dta file is in the scf2022s.zip, unpack it
+# and place it in the file folder
+
+#use SCFP2022.csv as it is w/o change inside the file folder
+
+
 
 #The x codes refer to specific columns from the p22i6 file, 
 #do NOT edit them, it will otherwise f^ck up the file and data entirely 
