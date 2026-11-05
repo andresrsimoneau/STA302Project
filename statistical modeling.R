@@ -1,32 +1,13 @@
-library(dplyr)
+# Run from the STA302Project folder to prepare the current analysis data.
+source("STA302File1.R")
 
-# Load prepared dataset
-implicate_1 <- readRDS("modeling_data.rds")
-View(implicate_1)
-
-# multiple linear regression model for graphing
+# Agreed preliminary model: nine predictors plus the interaction.
 model <- lm(
-  x4003 ~ income + debt + age + kids +
-    married + housecl + edcl + asset + lf,
-  data = implicate_1
+  term_coverage_2025 ~ normal_income_c * children +
+    debt_100k + partnered + age_c + assets_100k +
+    education + employment + homeowner,
+  data = analysis_data,
+  na.action = na.fail
 )
 
 summary(model)
-
-# INCOME
-# DEBT
-#AGE
-#kIDS (indicator; data must be filtered)
-#- 1 = kids, 2 = no kids
-#MARRIED (indicator)
-#- 1 = married, 2 = not married
-#home ownership - HOUSECL (indicator)
-#- 1 = owns home, 2 = does not own home
-#Education - EDCL
-#- 1 = no HS diploma/GED
-#- 2 = HS diploma/GED
-#- 3 = some college
-#- 4 = college degree
-#Assets (excluding insurance value)
-#Labor force participation of reference person (LF; indicator) 
-#- 0 = not working, 1 = working

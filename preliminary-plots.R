@@ -2,7 +2,7 @@
 # Five figures: four core grids and one influence grid.
 # You can run one numbered section at a time.
 # Keep the full-range plots; only the overall grid includes a zoom.
-source("STA302File1.R")
+source("statistical modeling.R")
 
 # Amounts are displayed in millions of 2025 dollars.
 # These plotting variables do not change the fitted model.
