@@ -13,32 +13,76 @@ library(dplyr)
 
 # we filtered this file to only take households w/ term insurance
 # dta file is used since U.S. gov didn't have csv file
-life_data <- read_dta("p22i6.dta")
+life_data <- read_dta("p22i6.dta", col_select = c(y1, yy1, x4002, x4003))
 trimmed_data <- life_data %>%
   select(y1, yy1, x4002,x4003) %>% filter(x4002 == 1,x4003 > 0)
 
-saveRDS(trimmed_data,"~/STA302Project/trimmed_data.rds")
-View(trimmed_data) #this is the dataset w/ info on everyone w/ term insurance
-
 scf_summary <- read.csv("SCFP2022.csv") #dataset for all else
-View(scf_summary)
 
 names(scf_summary) <- tolower(names(scf_summary)) #make columns lowercase
 
-
-# only merges rows where both share same y1 and yy1 value 
+# Keep eligible term-insurance records and attach summary data using both IDs.
 # we only use p22i6 for term insurance, scfp2022 for all else
 ultimate_data <- left_join(trimmed_data,scf_summary, by = c("y1", "yy1"))
 ultimate_data$implicate <- ultimate_data$y1 %% 10
 
-#filter to get indicate_1 so we do not overcount 
+# Keep implicate 1 so each family appears once in this analysis.
 implicate_1 <- filter(ultimate_data, implicate == 1)
 
-#use ultimate_data for MLR modeling
-View(implicate_1)
+# Use the first implicate for modeling. Summary monetary values are in 2025 dollars.
+# Convert only raw term coverage from 2022 dollars to the same price basis.
+# Source: Federal Reserve SCF bulletin.macro.txt (saved with the project).
+scf_price_index_2022 <- 4376
+scf_price_index_2025 <- 4789
+coverage_to_2025 <- scf_price_index_2025 / scf_price_index_2022
+
+implicate_1 <- implicate_1 %>%
+  mutate(term_coverage_2025 = x4003 * coverage_to_2025)
+
+# Keep the existing data and add the agreed model variables.
+analysis_data <- implicate_1 %>%
+  mutate(
+    normal_income_c = norminc / 100000 - 1,
+    debt_100k = debt / 100000,
+    assets_100k = (fin - cashli) / 100000,
+    age_c = (age - 50) / 10,
+
+    children = factor(
+      ifelse(kids > 0, "Yes", "No"),
+      levels = c("No", "Yes")
+    ),
+
+    partnered = factor(
+      ifelse(married == 1, "Yes", "No"),
+      levels = c("No", "Yes")
+    ),
+
+    homeowner = factor(
+      ifelse(hhouses == 1, "Yes", "No"),
+      levels = c("No", "Yes")
+    ),
+
+    # EDCL 4 = bachelor's degree or higher; 1-3 = below bachelor's.
+    education = factor(
+      ifelse(edcl == 4, "Bachelor+", "Below bachelor"),
+      levels = c("Below bachelor", "Bachelor+")
+    ),
+
+    # OCCAT2: 1-3 are occupation groups; 4 means not working.
+    employment = factor(
+      ifelse(occat2 == 4, "Not working", "Working"),
+      levels = c("Not working", "Working")
+    )
+  )
 
 
-model <- lm(x4003 ~ income + debt + age + kids + married + housecl + edcl + asset +
-   lf, data = implicate_1)
+# Agreed preliminary model: nine predictors plus the interaction.
+model <- lm(
+  term_coverage_2025 ~ normal_income_c * children +
+    debt_100k + partnered + age_c + assets_100k +
+    education + employment + homeowner,
+  data = analysis_data,
+  na.action = na.fail
+)
 
 summary(model)
