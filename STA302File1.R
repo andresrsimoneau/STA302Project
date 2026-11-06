@@ -1,25 +1,8 @@
 library(haven)
 library(dplyr)
-# pls be patient w/ file size, it is very large (226mb) 
-# the p22i6.dta file is in the scf2022s.zip, unpack it
-# and place it in the file folder so the model functions properly 
 
-# use SCFP2022.csv as it is w/o change inside the file folder
-# this R file is for cleaning purposes, statstical modeling R does the 
-# MLR modeling 
+life_data <- read.csv("SCF_original.csv") #cleaned dataset for term insurance info
 
-
-# The x codes refer to specific columns from the p22i6 file, 
-# do NOT edit them, it will otherwise mess up the file, data, and model entirely 
-
-# reference for p22i6 file, 
-# x4002 column is boolean if we have term insurance (1=yes, 5=no)
-# x4003 column is amount of household term insurance covered
-
-
-# we filtered this file to only take households w/ term insurance
-# dta file is used since U.S. gov didn't have csv file
-life_data <- read_dta("p22i6.dta", col_select = c(y1, yy1, x4002, x4003))
 trimmed_data <- life_data %>%
   select(y1, yy1, x4002,x4003) %>% filter(x4002 == 1,x4003 > 0)
 
