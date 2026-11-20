@@ -1,10 +1,49 @@
-.Rproj.user
-.Rhistory
-.Rdata
-.httr-oauth
+# macOS and local editor files
 .DS_Store
-.quarto
-.RData
+._*
+.vscode/
+*.code-workspace
+*~
+*.swp
+*.swo
+
+# RStudio session state, workspaces, and local credentials
+.Rproj.user/
 .Rhistory
+.Rapp.history
+.RData
+.Rdata
+.Ruserdata
+.httr-oauth
+.Renviron
+
+# Binary data formats excluded by the existing project rules
 *.dta
 *.rds
+
+# R Markdown / Quarto caches and generated support files
+.quarto/
+*_cache/
+*_files/
+*.knit.md
+*.utf8.md
+Rplots.pdf
+
+# Regenerated analysis outputs (retained reference results stay visible)
+/Quercus files/reproduced-results/
+/Quercus files/part2-results/
+
+# Local temporary files and rendering intermediates
+/tmp/
+/temp/
+/.cache/
+*.aux
+*.log
+*.out
+*.toc
+*.synctex.gz
+*.fdb_latexmk
+*.fls
+
+# Keep project code, CSV inputs, documentation, reference results,
+# proposal/poster PDFs, and the RStudio project file eligible for Git.
