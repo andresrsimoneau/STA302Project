@@ -1,5 +1,12 @@
-library(haven)
+library(data.table)
 library(dplyr)
+
+
+scf_original <- fread(
+  "SCF_full_unedited.csv",
+  select = c("y1", "yy1", "x4002", "x4003"))
+
+write.csv(scf_original, "SCF_original.csv", row.names = FALSE)
 
 life_data <- read.csv("SCF_original.csv") #cleaned dataset for term insurance info
 
