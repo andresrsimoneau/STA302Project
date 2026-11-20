@@ -1,7 +1,6 @@
 library(data.table)
 library(dplyr)
 
-
 scf_original <- fread(
   "SCF_full_unedited.csv",
   select = c("y1", "yy1", "x4002", "x4003"))
