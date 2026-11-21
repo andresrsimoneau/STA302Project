@@ -47,3 +47,7 @@ Rplots.pdf
 
 # Keep project code, CSV inputs, documentation, reference results,
 # proposal/poster PDFs, and the RStudio project file eligible for Git.
+
+# Local expanded input and regenerated transformation comparisons
+/SCF_full_unedited.csv
+/results/
