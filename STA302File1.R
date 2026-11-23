@@ -3,7 +3,7 @@ library(dplyr)
 
 scf_original <- fread(
   "SCF_full_unedited.csv",
-  select = c("y1", "yy1", "x4002", "x4003"))
+  select = c("x4002", "x4003", "yy1", "y1"))
 
 write.csv(scf_original, "SCF_original.csv", row.names = FALSE)
 
