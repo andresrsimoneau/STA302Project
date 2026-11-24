@@ -119,3 +119,142 @@ par(mfrow = c(1, 1))
 # Optional additional check; not drawn automatically because it overlaps
 # with the residual-versus-fitted plot. Run this line separately if needed:
 # plot(model, which = 3)  # Scale-location plot
+
+
+#WEEEEE
+
+fitted_values <- fitted(final_model)
+residuals <- resid(final_model)
+coverage <- analysis_data$log_coverage
+
+income <- analysis_data$log_income_c
+debt <- analysis_data$sqrt_debt
+age <- analysis_data$age_c
+assets <- analysis_data$log_assets
+
+child_colour <- ifelse(analysis_data$children == "Yes",
+                       "orange3", "steelblue")
+
+par(mfrow = c(2, 2), mar = c(6, 4.5, 3, 1))
+
+plot(fitted_values, residuals,
+     xlab = "Fitted log coverage", ylab = "Residual (log scale)",
+     main = "Residuals vs fitted: full range")
+abline(h = 0, col = "red")
+lines(lowess(fitted_values, residuals), col = "blue")
+
+qqnorm(rstandard(final_model),
+       main = "Normal Q-Q", ylab = "Standardized residual")
+qqline(rstandard(final_model), col = "red")
+
+plot(fitted_values, coverage,
+     xlab = "Fitted log coverage",
+     ylab = "Observed log coverage",
+     main = "Observed vs fitted: full range")
+abline(0, 1, col = "red")
+
+plot(fitted_values, residuals,
+     xlim = c(min(fitted_values), quantile(fitted_values, 0.95)),
+     ylim = quantile(residuals, c(0.01, 0.99)),
+     xlab = "Fitted log coverage", ylab = "Residual (log scale)",
+     main = "Residuals vs fitted: zoom",
+     sub = "x: min-95th percentile; y: 1st-99th")
+abline(h = 0, col = "red")
+lines(lowess(fitted_values, residuals), col = "blue")
+
+
+par(mfrow = c(2, 2), mar = c(4, 4, 3, 1))
+
+plot(income, residuals, col = child_colour,
+     xlab = "Centered log income", ylab = "Residual (log scale)",
+     main = "Residuals vs transformed income")
+abline(h = 0, col = "red")
+legend("topright", c("No children", "Children"),
+       col = c("steelblue", "orange3"), pch = 1,
+       bty = "n", cex = 0.8)
+
+plot(debt, residuals,
+     xlab = "Square-root debt", ylab = "Residual (log scale)",
+     main = "Residuals vs transformed debt")
+abline(h = 0, col = "red")
+
+plot(age, residuals,
+     xlab = "Centered and scaled age", ylab = "Residual (log scale)",
+     main = "Residuals vs transformed age")
+abline(h = 0, col = "red")
+
+plot(assets, residuals,
+     xlab = "Log financial assets",
+     ylab = "Residual (log scale)",
+     main = "Residuals vs transformed assets")
+abline(h = 0, col = "red")
+
+
+par(mfrow = c(2, 3), mar = c(6, 4, 3, 1))
+
+boxplot(residuals ~ analysis_data$children,
+        xlab = "Children", ylab = "Residual (log scale)",
+        main = "Child presence")
+abline(h = 0, col = "red")
+
+boxplot(residuals ~ analysis_data$partnered,
+        xlab = "Partnered", ylab = "Residual (log scale)",
+        main = "Partnership")
+abline(h = 0, col = "red")
+
+boxplot(residuals ~ analysis_data$education,
+        names = c("Below bachelor", "Bachelor+"),
+        cex.axis = 0.7, xlab = "Education",
+        ylab = "Residual (log scale)", main = "Education")
+abline(h = 0, col = "red")
+
+boxplot(residuals ~ analysis_data$employment,
+        names = c("Not working", "Working"),
+        cex.axis = 0.7, xlab = "Employment",
+        ylab = "Residual (log scale)", main = "Employment")
+abline(h = 0, col = "red")
+
+boxplot(residuals ~ analysis_data$homeowner,
+        xlab = "Homeowner", ylab = "Residual (log scale)",
+        main = "Homeownership")
+abline(h = 0, col = "red")
+
+plot.new()
+
+
+par(mfrow = c(2, 3), mar = c(4, 4, 3, 1))
+
+plot(income, debt, col = child_colour,
+     xlab = "Centered log income", ylab = "Square-root debt",
+     main = "Transformed income and debt")
+legend("topright", c("No children", "Children"),
+       col = c("steelblue", "orange3"), pch = 1,
+       bty = "n", cex = 0.8)
+
+plot(income, age, col = child_colour,
+     xlab = "Centered log income", ylab = "Centered and scaled age",
+     main = "Transformed income and age")
+
+plot(income, assets, col = child_colour,
+     xlab = "Centered log income", ylab = "Log financial assets",
+     main = "Transformed income and assets")
+
+plot(debt, age, col = child_colour,
+     xlab = "Square-root debt", ylab = "Centered and scaled age",
+     main = "Transformed debt and age")
+
+plot(debt, assets, col = child_colour,
+     xlab = "Square-root debt", ylab = "Log financial assets",
+     main = "Transformed debt and assets")
+
+plot(age, assets, col = child_colour,
+     xlab = "Centered and scaled age", ylab = "Log financial assets",
+     main = "Transformed age and assets")
+
+
+par(mfrow = c(1, 2), mar = c(4.5, 4.5, 3, 2))
+
+plot(final_model, which = 5, ask = FALSE)
+plot(final_model, which = 4, ask = FALSE)
+
+par(mfrow = c(1, 1))

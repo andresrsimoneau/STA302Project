@@ -17,6 +17,7 @@ analysis_data <- transform(analysis_data,
   cube_income_c = (norminc / 100000)^(1/3) - 1,
   sqrt_debt = sqrt(debt_100k),
   log_assets = log(assets_100k + 1/100000))
+
 final_model <- lm(log_coverage ~ log_income_c * children + sqrt_debt + log_assets +
                     age_c + I(age_c^2) + partnered + education + employment + homeowner,
                   data = analysis_data, na.action = na.fail)
@@ -45,3 +46,14 @@ coverage_ratios <- function(fit) {
   data.frame(ratio = exp(estimate), lower = exp(estimate-margin), upper = exp(estimate+margin))
 }
 print(coverage_ratios(final_model))
+
+
+#check final_model for R^2 and t-tests
+summary(final_model)
+
+#use for calculating VIF
+X <- model.matrix(final_model)[, -1]
+round(cov(X), 3)
+round(cor(X), 3)
+# VIF function
+round(diag(solve(cor(X))), 3)
